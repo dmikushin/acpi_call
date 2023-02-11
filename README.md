@@ -1,15 +1,19 @@
 # acpi\_call
-This is a fork of [acpi_call](https://github.com/mkottman/acpi_call) maintained by the NixOS community.
-Patches also for non-NixOS related fixes are welcome!
+This is a fork of [acpi_call](https://github.com/mkottman/acpi_call).
 
 A simple kernel module that allows one to call ACPI methods by writing the
 method name followed by its arguments to `/proc/acpi/call`.
 
-## Notes on dkms and Secure Boot
+## Building
 
-If that is the way you want to install this module, you can follow 
-[this guide](https://web.archive.org/web/20210215173902/https://gist.github.com/dop3j0e/2a9e2dddca982c4f679552fc1ebb18df) ([mirror](https://gist.github.com/s-h-a-d-o-w/53c2215e955c3326c6ec8f812a0d2f27))
-to have dkms automatically sign the module after building.
+    sudo ./one-time-setup
+    sudo reboot
+    make
+    sudo make dkms-add
+    sudo make dkms-install
+
+The `one-time-setup` script above is intended to to have dkms automatically
+sign the module after building, as described [here](https://gist.github.com/s-h-a-d-o-w/53c2215e955c3326c6ec8f812a0d2f27).
 
 ## Usage
 
@@ -27,9 +31,8 @@ environment (like NVIDIA Optimus):
     # turn it back on
     echo '\_SB.PCI0.PEG1.GFX0.DON' > /proc/acpi/call
 
-These work on my ASUS K52J notebook, but may not work for you. For a list of
-methods to try, see http://linux-hybrid-graphics.blogspot.com/ or try running
-the provided script `examples/turn_off_gpu.sh`
+These work on my ASUS K52J notebook, but may not work for you. See a [list of methods to try](http://linux-hybrid-graphics.blogspot.com/)
+or try running the provided script `examples/turn_off_gpu.sh`.
 
 It SHOULD be ok to test all of the methods, until you see a drop in battery
 drain rate (`grep rate /proc/acpi/battery/BAT0/state`), however it comes
@@ -54,25 +57,3 @@ The status after a call can be read back from `/proc/acpi/call`:
 * '[...]' - the call succeeded, and returned a package which may contain the
    above types (integer, string and buffer) and other package types
 
-
-## GUI Alternatives
-
-Found this too difficult? Try to use these programs provided by Marco Dalla Libera and do it via graphic interface. **Note that they is not suitable for arbitrary 
-APCI calls but intended for turning off discrete graphics only**.
-
-* [acpi_call_GUI (Ubuntu and his derivates)](https://github.com/marcoDallas/acpi_call_GUI)
-* [acpi_call_GUI_systemd (all linux distros that support systemd: Ubuntu 16.04+, Fedora, Arch, Mandriva etc.)](https://github.com/marcoDallas/acpi_call_GUI_systemd)
-
-***
-
-Copyright (c) 2010: Michal Kottman
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.

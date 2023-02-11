@@ -5,3 +5,4 @@ CLEAN="make clean"
 BUILT_MODULE_NAME[0]="acpi_call"
 AUTOINSTALL="yes"
 DEST_MODULE_LOCATION[0]="/extra"
+POST_BUILD=$(dirname $0)/dkms-sign-module
